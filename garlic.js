@@ -189,25 +189,26 @@
 
           // for checkboxes and radios
           if ( 'checked' === storedValue || this.$element.val() === storedValue ) {
-            return this.$element.prop( 'checked', true );
+            this.$element.prop( 'checked', true );
 
-          // only needed for checkboxes
+            // trigger an event given the value has been changed
+            this.$element.trigger( 'click' );
+
+            // only needed for checkboxes
           } else if ( 'unchecked' === storedValue ) {
             this.$element.prop( 'checked', false );
           }
+        } else {
+          // for input[type=text], select and textarea, just set val()
+          this.$element.val( storedValue );
 
-          return;
+          // trigger a change event given the value has been changed
+          this.$element.trigger('change');
         }
-
-        // for input[type=text], select and textarea, just set val()
-        this.$element.val( storedValue );
-
-        // trigger an input event given the value has been changed
-        this.$element.trigger( 'input' );
 
         // trigger custom user function when data is retrieved
         this.options.onRetrieve( this.$element, storedValue );
-
+        
         return;
       }
     }
